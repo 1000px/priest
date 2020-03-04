@@ -1,0 +1,89 @@
+html, body {
+    width: 100vw;
+    height: 100vh;
+}
+* {
+    padding: 0;
+    margin: 0;
+}
+.layout {
+    width: 100vw;
+    height: 100vh;
+    background: #aaaaaa;
+}
+/* 页面顶部 对手信息区 */
+.oppenent {
+    box-sizing: border-box;
+    width: 100vw;
+    height: 11vh;
+    padding-top: 1vh;
+    border-bottom: 0.1vh solid #999999;
+}
+.oppenent > div {
+    background-color: aqua;
+    width: 10vw;
+    height: 9vh;
+    margin-right: 2vw;
+    float: right;
+    border-radius: 1vmin;
+}
+.oppenent > div.oppenent-header {
+    width: 9vmax;
+    height: 9vh;
+    background-color: steelblue;
+}
+/* 页面底部 我的信息区 */
+.mine {
+    box-sizing: border-box;
+    width: 100vw;
+    height: 10vh;
+    padding-top: 1vh;
+    border-top: 0.1vh solid #999999;
+}
+.mine > div {
+    background-color: yellowgreen;
+    width: 10vw;
+    height: 9vh;
+    margin-left: 2vw;
+    float: left;
+    border-radius: 1vmin;
+}
+.mine > div.mine-header {
+    width: 9vmax;
+    height: 9vh;
+    background-color: blue;
+}
+/* 页面主体区域 卡牌对战区 */
+.box {
+    box-sizing: border-box;
+    width: 88vw;
+    height: 69vh;
+    margin: 4vh auto;
+    border: 0.1vmin solid #333333;
+}
+.box > div {
+    box-sizing: border-box;
+    float: left;
+    width: 28vw;
+    height: 16vh;
+    border: 0.1vmin solid #333333;
+    margin-left: 1vw;
+    margin-top: 1vh;
+}
+/* 区域闪动提醒 */
+.zone-animation1 {
+    /* background-color: red; */
+    background-color: red;;
+    transition: background 2s;
+}
+.zone-animation2 {
+    background-color: yellow;
+}
+.zone-animation3 {
+    background-color: blue;
+}
+
+@keyframes zoneflash {
+    from {background-color: transparent;}
+    to {background-color: red;}
+}
