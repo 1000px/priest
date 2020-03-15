@@ -1,4 +1,3 @@
-var print = console.log;
 var CARDS = []; // 卡牌序列
 var CHECKERS = []; // 对战区域
 var COLORS = [{
@@ -37,7 +36,6 @@ function cardEventInit() {
 
 // 卡牌拖动开始
 function drag_start(e) {
-    print('drag start ...');
     e.dataTransfer.setData('cardVal', this.getAttribute('data-cv'));
     var zones = getNullZones();
     zoneBlink(zones, 1);
@@ -47,23 +45,36 @@ function drag_start(e) {
 function drag_over(e) {
     e.preventDefault();
     e.stopPropagation();
-    print('drag over');
 }
 
 // 卡牌拖放结束：释放卡牌
 function drag_end(e) {
-    print('drag end');
 }
 
 // 卡牌放置到目标位置
 function drop_it(e) {
     e.preventDefault();
     e.stopPropagation();
-    print('drop on it');
-    removeClass(pre_klass + '1');
-    var currentCard = e.dataTransfer.getData('cardVal');
-    e.target.innerHTML = currentCard;
-    var zones = getAttackZones(currentCard);
+    var currChecker = e.target;
+    // 将闪动区域的动画效果去除
+    removeClass(CHECKERS, pre_klass + '1');
+    if(currChecker.getAttribute('data-stat') == 0) {
+        // 获取当前被拖动的卡牌数据
+        var cardVal = e.dataTransfer.getData('cardVal');
+        currChecker.innerHTML = cardVal;
+        currChecker.setAttribute('data-stat', 1);
+        for(var i=0; i<CARDS.length; i++) {
+            if(CARDS[i].getAttribute('data-cv') == cardVal) {
+                CARDS[i].setAttribute('draggable', false);
+            }
+        }
+    }
+    // 获取当前卡牌放置位置
+    // 1 计算攻击区域
+    var zones = getAttackZones(currChecker.getAttribute('data-index'));
+    // 2 实施攻击
+    console.log('应该攻击的区域为：', zones);
+
 }
 
 // 事件方法 --end
@@ -86,11 +97,11 @@ function nullCard(card) {
 function getAttackZones(_checkerindex) {
     var checkerindex = parseInt(_checkerindex);
     if(!isInt(checkerindex)) {
-        print('对战区域位置参数错误。');
+        console.error(101, 'Get the wrong checker index, it should be one number');
         return;
     }
     if(checkerindex > 12 || checkerindex < 1) {
-        print('对战区域位置参数错误。');
+        console.error(102, 'Get the wrong checker index, it should be inner at [0, 11]');
         return;
     }
 
@@ -147,8 +158,15 @@ function isInt(val) {
     return val % 1 == 0;
 }
 // 删除class
-function removeClass(el, klassname) {
-    el.classList.remove(klassname);
+function removeClass(els, klassname) {
+    // el.classList.remove(klassname);
+    if(!els.classList && els.length > 0) {
+        for(var i=0; i<els.length; i++) {
+            if(els[i].classList) {
+                els[i].classList.remove(klassname);
+            }
+        }
+    }
 }
 // 添加class
 function addClass(el, klassname) {

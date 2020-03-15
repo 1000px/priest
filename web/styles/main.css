@@ -22,7 +22,11 @@ html, body {
 .oppenent > div {
     background-color: aqua;
     width: 10vw;
+    font-size: 18px;
+    color: red;
     height: 9vh;
+    line-height: 9vh;
+    text-align: center;
     margin-right: 2vw;
     float: right;
     border-radius: 1vmin;
@@ -42,8 +46,12 @@ html, body {
 }
 .mine > div {
     background-color: yellowgreen;
+    font-size: 18px;
+    color: white;
     width: 10vw;
     height: 9vh;
+    line-height: 9vh;
+    text-align: center;
     margin-left: 2vw;
     float: left;
     border-radius: 1vmin;
@@ -64,8 +72,11 @@ html, body {
 .box > div {
     box-sizing: border-box;
     float: left;
+    font-size: 12vh;
     width: 28vw;
     height: 16vh;
+    line-height: 16vh;
+    text-align: center;
     border: 0.1vmin solid #333333;
     margin-left: 1vw;
     margin-top: 1vh;
