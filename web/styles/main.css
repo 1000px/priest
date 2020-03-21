@@ -1,100 +1,221 @@
 html, body {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    background-color: #666666;
 }
 * {
     padding: 0;
     margin: 0;
 }
+.pad {
+    width: 1400px;
+    height: 920px;
+    background: url(../img/body_pad.png) no-repeat center;
+    background-size: 100% 100%;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+}
 .layout {
-    width: 100vw;
-    height: 100vh;
-    background: #aaaaaa;
+    width: 1280px;
+    height: 800px;
+    background: #339999;
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    border-radius: 8px;
 }
 /* 页面顶部 对手信息区 */
 .oppenent {
     box-sizing: border-box;
-    width: 100vw;
-    height: 11vh;
-    padding-top: 1vh;
-    border-bottom: 0.1vh solid #999999;
+    width: 1280px;
+    height: 106px;
+    padding-top: 8px;
+    border-bottom: 1px solid #66CCCC;
 }
 .oppenent > div {
-    background-color: aqua;
-    width: 10vw;
-    font-size: 18px;
-    color: red;
-    height: 9vh;
-    line-height: 9vh;
-    text-align: center;
-    margin-right: 2vw;
+    background-color: #cc0033;
+    width: 90px;
+    height: 90px;
+    margin-right: 10px;
     float: right;
-    border-radius: 1vmin;
+    border-radius: 5px;
 }
+.oppenent-card > div,
+.checker > div,
+.mine-card > div {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+div.op-card-01 {
+    background: url(../img/b_1_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.op-card-02 {
+    background: url(../img/b_2_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.op-card-03 {
+    background: url(../img/b_3_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.op-card-04 {
+    background: url(../img/b_4_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.op-card-05 {
+    background: url(../img/b_5_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.op-card-06 {
+    background: url(../img/b_joke_op.png) no-repeat center;
+    background-size: 92%;
+}
+.oppenent-card > div > span,
+.checker > div > span,
+.mine-card > div > span {
+    display: block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 15px;
+    color: red;
+    background-color: #ffffff;
+    border: 1px solid #222BA4;
+    border-radius: 10px;
+    position: absolute;
+    top: -6px;
+    right: -6px;
+}
+
 .oppenent > div.oppenent-header {
-    width: 9vmax;
-    height: 9vh;
-    background-color: steelblue;
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    background-color: #cc0033;
+    color: white;
+    margin-right: 60px;
 }
 /* 页面底部 我的信息区 */
 .mine {
     box-sizing: border-box;
-    width: 100vw;
-    height: 10vh;
-    padding-top: 1vh;
-    border-top: 0.1vh solid #999999;
+    width: 100%;
+    height: 106px;
+    padding-top: 8px;
+    border-top: 1px solid #66CCCC;
 }
 .mine > div {
-    background-color: yellowgreen;
-    font-size: 18px;
-    color: white;
-    width: 10vw;
-    height: 9vh;
-    line-height: 9vh;
-    text-align: center;
-    margin-left: 2vw;
+    background-color: #000000;
+    width: 90px;
+    height: 90px;
+    margin-left: 10px;
     float: left;
-    border-radius: 1vmin;
+    border-radius: 5px;
 }
 .mine > div.mine-header {
-    width: 9vmax;
-    height: 9vh;
-    background-color: blue;
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    background-color: #000000;
+    color: white;
+    margin-left: 60px;
+}
+.mine-card > div {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+div.mi-card-01 {
+    background: url(../img/a_1_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.mi-card-02 {
+    background: url(../img/a_2_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.mi-card-03 {
+    background: url(../img/a_3_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.mi-card-04 {
+    background: url(../img/a_4_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.mi-card-05 {
+    background: url(../img/a_5_op.png) no-repeat center;
+    background-size: 92%;
+}
+div.mi-card-06 {
+    background: url(../img/a_joke_op.png) no-repeat center;
+    background-size: 92%;
 }
 /* 页面主体区域 卡牌对战区 */
 .box {
     box-sizing: border-box;
-    width: 88vw;
-    height: 69vh;
-    margin: 4vh auto;
-    border: 0.1vmin solid #333333;
+    width: 650px;
+    height: 490px;
+    margin: 48px auto;
+    border: 1px solid #66CCCC;
 }
 .box > div {
     box-sizing: border-box;
     float: left;
-    font-size: 12vh;
-    width: 28vw;
-    height: 16vh;
-    line-height: 16vh;
-    text-align: center;
-    border: 0.1vmin solid #333333;
-    margin-left: 1vw;
-    margin-top: 1vh;
+    width: 150px;
+    height: 150px;
+    border: 1px solid #66CCCC;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 /* 区域闪动提醒 */
 .zone-animation1 {
-    /* background-color: red; */
-    background-color: red;;
-    transition: background 2s;
-}
-.zone-animation2 {
-    background-color: yellow;
-}
-.zone-animation3 {
-    background-color: blue;
+    background-color: #aaaaaa;
+    animation: zone-frame1 3s;
+    -webkit-animation: zone-frame1 3s;
 }
 
-@keyframes zoneflash {
-    from {background-color: transparent;}
-    to {background-color: red;}
+
+@keyframes zone-frame1 {
+    25% { background-color: #999999; }
+    50% { background-color: #aaaaaa; }
+    75% { background-color: #999999; }
+}
+@-webkit-keyframes zone-frame1 {
+    25% { background-color: #999999; }
+    50% { background-color: #aaaaaa; }
+    75% { background-color: #999999; }
+}
+#modal {
+    position: absolute;
+    width: 40vw;
+    height: 40vh;
+    top: 30vh;
+    left: 30vw;
+    text-align: center;
+    display: none;
+    border: 1px solid #aaaaaa;
+    border-radius: 1vmax;
+    background-color: #eeeeee;
+}
+#modal h2 {
+    text-align: center;
+    height: 15vh;
+    line-height: 15vh;
+}
+#modal h3 {
+    text-align: center;
+    height: 15vh;
+    line-height: 15vh;
+}
+#modal button {
+    background-color: none;
+    border: 1px solid #aaaaaa;
+    border-radius: 2px;
+    width: 30vw;
+    height: 5vh;
 }

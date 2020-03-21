@@ -1,42 +1,55 @@
-var CARDS = []; // 卡牌序列
+var MCARDS = []; // 卡牌序列
+var OCARDS = [];
 var CHECKERS = []; // 对战区域
-var COLORS = [{
-    label: 'mine',
-    bg: '#7B9BC1'
-}, {
-    label: 'enemy',
-    bg: '#DF8C88'
-}];
+var COLOR = {
+    mine: '#000000',
+    oppenent: '#cc0033'
+};
+var times = 0;
+var roleLabel = '';
 var pre_klass = 'zone-animation';
+var CURR_CARD = null;
 
 window.onload = function() {
-    this.resetCards('mine-card', 'checker');
+    this.resetCards();
     this.cardEventInit();
 }
 
 // 拖动事件绑定到卡牌
 function cardEventInit() {
     // var cards = document.getElementsByClassName('mine-card'); // 我方卡牌放置区
-    var checkers = document.getElementsByClassName('checker'); // 对战区方格
-    var _len_cards = CARDS.length;
-    var _len_checkers = checkers.length;
-    for (var i=0; i < _len_cards; i++) {
-        card = CARDS[i];
-        card.ondragstart = drag_start;
-        card.ondragend = drag_end;
+    // var checkers = document.getElementsByClassName('checker'); // 对战区方格
+    var _len_mcards = MCARDS.length;
+    var _len_ocards = OCARDS.length;
+    var _len_checkers = CHECKERS.length;
+    // 为我方绑定事件
+    for (var i=0; i < _len_mcards; i++) {
+        mcard = MCARDS[i];
+        mcard.ondragstart = drag_start;
+        mcard.ondragend = drag_end;
     }
+    // 为敌方绑定事件
+    for(var k=0; k < _len_ocards; k++) {
+        ocard = OCARDS[k];
+        ocard.ondragstart = drag_start;
+        ocard.ondragend = drag_end;
+    }
+    // fight area binding events
     for (var j=0; j < _len_checkers; j++) {
-        checker = checkers[j];
+        checker = CHECKERS[j];
         checker.ondragover = drag_over;
         checker.ondrop = drop_it;
-    } 
+    }
 }
 
 // 事件方法 --start
 
 // 卡牌拖动开始
 function drag_start(e) {
-    e.dataTransfer.setData('cardVal', this.getAttribute('data-cv'));
+    var data = this.getAttribute('data-cv') + ' ' + this.getAttribute('data-role');
+    console.log('color and role: ', data);
+    CURR_CARD = this;
+    e.dataTransfer.setData('text', data);
     var zones = getNullZones();
     zoneBlink(zones, 1);
 }
@@ -60,12 +73,25 @@ function drop_it(e) {
     removeClass(CHECKERS, pre_klass + '1');
     if(currChecker.getAttribute('data-stat') == 0) {
         // 获取当前被拖动的卡牌数据
-        var cardVal = e.dataTransfer.getData('cardVal');
-        currChecker.innerHTML = cardVal;
+        var cardval = e.dataTransfer.getData('text');
+        var cardObj = {
+            cv: cardval.split(' ')[0],
+            role: cardval.split(' ')[1]
+        };
+        currChecker.innerHTML = CURR_CARD.innerHTML;
+        
+        currChecker.style.backgroundColor = COLOR[cardObj.role];
+        currChecker.setAttribute('data-cv', cardObj.cv);
         currChecker.setAttribute('data-stat', 1);
-        for(var i=0; i<CARDS.length; i++) {
-            if(CARDS[i].getAttribute('data-cv') == cardVal) {
-                CARDS[i].setAttribute('draggable', false);
+        currChecker.setAttribute('data-camp', cardObj.role);
+        for(var i=0; i<MCARDS.length; i++) {
+            if(MCARDS[i].getAttribute('data-cv') == cardObj.cv && MCARDS[i].getAttribute('data-role') == cardObj.role) {
+                nullCard(MCARDS[i]);
+            }
+        }
+        for(var j=0; j<OCARDS.length; j++) {
+            if(OCARDS[j].getAttribute('data-cv') == cardObj.cv && OCARDS[j].getAttribute('data-role') == cardObj.role) {
+                nullCard(OCARDS[j]);
             }
         }
     }
@@ -73,8 +99,41 @@ function drop_it(e) {
     // 1 计算攻击区域
     var zones = getAttackZones(currChecker.getAttribute('data-index'));
     // 2 实施攻击
-    console.log('应该攻击的区域为：', zones);
+    for(var j=0; j<zones.length; j++) {
+        var _here = CHECKERS[zones[j]-1];
+        if(_here.getAttribute('data-camp') && _here.getAttribute('data-camp') != cardObj.role) {
+            var _val_here = _here.getAttribute('data-cv');
+            if(_val_here < cardObj.cv) {
+                _here.style.backgroundColor = COLOR[cardObj.role];
+                _here.setAttribute('data-camp', cardObj.role);
+            }
+            // 
+        }
+    }
 
+    // 判断游戏是否结束，如果结束给出对战结果
+    times = times + 1;
+    if(times == 12) {
+        console.log('Game over');
+        var endStr = '<h2>Game Over.</h2>'
+        var mineCount = 0;
+        for(var n=0; n<CHECKERS.length; n++) {
+            if(CHECKERS[n].getAttribute('data-camp') == 'mine') {
+                mineCount = mineCount + 1;
+            }
+        }
+        
+        if(mineCount > 6) {
+            endStr += '<h3>You Win!</h3>';
+        } else {
+            endStr += '<h3>You Lose...</h3>';
+        }
+        endStr += '<button onclick="resetGame()">重新开始？</button>'
+        var modal = document.getElementById('modal');
+        modal.style.display = 'block';
+        modal.innerHTML = endStr;
+    }
+    
 }
 
 // 事件方法 --end
@@ -82,9 +141,10 @@ function drop_it(e) {
 // 功能函数 --start
 
 // 初始化卡牌
-function resetCards(cardname, zonename) {
-    CARDS = document.getElementsByClassName(cardname);
-    CHECKERS = document.getElementsByClassName(zonename);
+function resetCards() {
+    MCARDS = document.getElementsByClassName('mine-card');
+    OCARDS = document.getElementsByClassName('oppenent-card');
+    CHECKERS = document.getElementsByClassName('checker');
 }
 
 // 我方卡牌拖动结束后 重置卡位
@@ -95,6 +155,7 @@ function nullCard(card) {
 
 // 计算卡牌攻击范围
 function getAttackZones(_checkerindex) {
+    console.log(_checkerindex);
     var checkerindex = parseInt(_checkerindex);
     if(!isInt(checkerindex)) {
         console.error(101, 'Get the wrong checker index, it should be one number');
@@ -106,17 +167,17 @@ function getAttackZones(_checkerindex) {
     }
 
     var zones = [];
-    if(checkerindex - 3 > 0) {
-        zones.push(checkerindex-3);
+    if(checkerindex - 4 > 0) {
+        zones.push(checkerindex-4);
     }
-    if(Math.ceil(checkerindex/3) == Math.ceil((checkerindex-1)/3)) {
+    if(Math.ceil(checkerindex/4) == Math.ceil((checkerindex-1)/4)) {
         zones.push(checkerindex-1);
     }
-    if(Math.ceil(checkerindex/3) == Math.ceil((checkerindex+1)/3)) {
+    if(Math.ceil(checkerindex/4) == Math.ceil((checkerindex+1)/4)) {
         zones.push(checkerindex+1);
     }
-    if(checkerindex + 3 < 12) {
-        zones.push(checkerindex+3);
+    if(checkerindex + 4 < 12) {
+        zones.push(checkerindex+4);
     }
     return zones;
 }
@@ -149,6 +210,15 @@ function zoneBlink(zones, level) {
         }
     }
 }
+
+// 卡牌翻面
+function toggleCard(el) {
+    if(el.getAttribute('data-camp') == 'mine') {
+        el.setAttribute('background-color', COLOR.mine);
+    } else {
+        el.setAttribute('background-color', COLOR.oppenent);
+    }
+}
 // 功能函数 --end
 
 // 工具函数 --start
@@ -173,3 +243,7 @@ function addClass(el, klassname) {
     el.classList.add(klassname);
 }
 // 工具函数 --end
+
+function resetGame() {
+    location.replace(location.href);
+}
