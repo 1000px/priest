@@ -8,8 +8,15 @@
 <script src="./script/main.js"></script>
 </head>
 <body>
-<div class="pad">
+<div class="pad" id="pad">
 <div class="layout">
+    <div id="info" class="info">
+        <h2>Card Game</h2>
+        <h3>敌方: <span id="oppenent_score">0</span></h3>
+        <h3>我方: <span id="mine_score">0</span></h3>
+        <div id="result" class="result">
+        </div>
+    </div>
     <div class="oppenent">
         <div class="oppenent-header">敌方</div>
         <div class="oppenent-card" data-role="oppenent" draggable="true" data-cv="1">
@@ -65,9 +72,6 @@
         <div class="mine-card" data-role="mine" draggable="true" data-cv="6">
             <div class="mi-card-06"><span>J</span></div>
         </div>
-    </div>
-    <div id="modal">
-        
     </div>
 </div>
 </div>

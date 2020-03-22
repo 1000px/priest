@@ -16,7 +16,7 @@ html, body {
     background-size: 100% 100%;
     overflow: hidden;
     position: relative;
-    margin: 0 auto;
+    margin: 8px auto;
 }
 .layout {
     width: 1280px;
@@ -191,12 +191,12 @@ div.mi-card-06 {
 }
 
 @-webkit-keyframes zone-frame {
-    from {background-color: #cc0033;}
-    to {background-color: #222BA4;}
+    from {background-color: #66CCCC;}
+    to {background-color: #339999;}
 }
 @keyframes zone-frame {
-    from {background-color: #cc0033;}
-    to {background-color: #222BA4;}
+    from {background-color: #66CCCC;}
+    to {background-color: #339999;}
 }
 @-webkit-keyframes zone-toggle {
     from {-webkit-transform: perspective(800px) rotateY(0deg);}
@@ -206,32 +206,50 @@ div.mi-card-06 {
     from {transform: perspective(800px) rotateY(0deg);}
     to {transform: perspective(800px) rotateY(360deg);}
 }
-#modal {
+.info {
     position: absolute;
-    width: 40vw;
-    height: 40vh;
-    top: 30vh;
-    left: 30vw;
+    right: 0;
+    top: 152px;
+    width: 220px;
+    height: 490px;
+    border: 1px solid #66CCCC;
+    border-right: none;
+}
+.info h2 {
+    text-align: center;
+    height: 48px;
+    line-height: 48px;
+    padding-top: 32px;
+}
+.info h3 {
+    text-align: center;
+    margin-top: 12px;
+    height: 32px;
+    line-height: 32px;
+}
+.info h3 span {
+    display: inline-block;
+    width: 48px;
+    text-align: right;
+}
+.info .result {
     text-align: center;
     display: none;
-    border: 1px solid #aaaaaa;
-    border-radius: 1vmax;
-    background-color: #eeeeee;
 }
-#modal h2 {
+.info .result h2 {
+    color: #cc0033;
+    font-size: large;
+    font-weight: bold;
     text-align: center;
-    height: 15vh;
-    line-height: 15vh;
 }
-#modal h3 {
+.info .result button {
+    width: 60%;
+    height: 32px;
+    line-height: 32px;
+    border: none;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 4px;
     text-align: center;
-    height: 15vh;
-    line-height: 15vh;
-}
-#modal button {
-    background-color: none;
-    border: 1px solid #aaaaaa;
-    border-radius: 2px;
-    width: 30vw;
-    height: 5vh;
+    cursor: pointer;
 }

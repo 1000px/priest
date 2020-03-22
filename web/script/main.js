@@ -12,8 +12,17 @@ var CURR_CARD = null;
 var max_card = 0;
 
 window.onload = function() {
+    // this.initGame();
     this.resetCards();
     this.cardEventInit();
+}
+
+function initGame() {
+    if(document.body.clientHeight < 920) {
+        window.alert('Please change the screen device, The game need a bigger one');
+    } else {
+        document.getElementById('pad').style.marginTop = (document.body.clientHeight - 920)/2 + 'px';
+    }
 }
 
 // 拖动事件绑定到卡牌
@@ -106,50 +115,50 @@ function drop_it(e) {
         var _here = CHECKERS[zones[j]-1];
         if(_here.getAttribute('data-camp') && _here.getAttribute('data-camp') != cardObj.role) {
             var _val_here = _here.getAttribute('data-cv');
-            console.log(_here.children);
             // if current card is joke, this card could just attack the max card of all the fighting area.
             // or if the current card is the 1 card, it just could attack the joke card
             if((cardObj.cv == 6 && _val_here == max_card) || (cardObj.cv == 1 && _val_here == 6)) {
                 _here.style.backgroundColor = COLOR[cardObj.role];
                 _here.setAttribute('data-camp', cardObj.role);
-                // _here.children[0].className += ' toggle';
-                
                 addClass(_here.children[0], 'zone-animation2');
-            } else if(_val_here < cardObj.cv) {
+            } else if(_val_here < cardObj.cv && cardObj.cv != 6) {
                 _here.style.backgroundColor = COLOR[cardObj.role];
                 _here.setAttribute('data-camp', cardObj.role);
-                // _here.children[0].className += ' toggle';
                 addClass(_here.children[0], 'zone-animation2');
             }
         }
     }
 
     // save the max value of all card
-    if(cardObj.cv > max_card) {
+    if(cardObj.cv > max_card && cardObj.cv != 6) {
         max_card = cardObj.cv;
     }
 
+    var mineCount = 0;
+    for(var n=0; n<CHECKERS.length; n++) {
+        if(CHECKERS[n].getAttribute('data-camp') == 'mine') {
+            mineCount = mineCount + 1;
+        }
+    }
+    
+
     // 判断游戏是否结束，如果结束给出对战结果
     times = times + 1;
+    document.getElementById('mine_score').innerText = mineCount;
+    document.getElementById('oppenent_score').innerText = times - mineCount;
     if(times == 12) {
-        console.log('Game over');
-        var endStr = '<h2>Game Over.</h2>'
-        var mineCount = 0;
-        for(var n=0; n<CHECKERS.length; n++) {
-            if(CHECKERS[n].getAttribute('data-camp') == 'mine') {
-                mineCount = mineCount + 1;
-            }
-        }
-        
+        var endStr = '';
         if(mineCount > 6) {
             endStr += '<h3>You Win!</h3>';
+        } else if(mineCount == 6) {
+            endStr += '<h3>Same Score!</h3>';
         } else {
             endStr += '<h3>You Lose...</h3>';
         }
         endStr += '<button onclick="resetGame()">重新开始？</button>'
-        var modal = document.getElementById('modal');
-        modal.style.display = 'block';
-        modal.innerHTML = endStr;
+        var result = document.getElementById('result');
+        result.style.display = 'block';
+        result.innerHTML = endStr;
     }
     
 }
@@ -193,7 +202,7 @@ function getAttackZones(_checkerindex) {
     if(Math.ceil(checkerindex/4) == Math.ceil((checkerindex+1)/4)) {
         zones.push(checkerindex+1);
     }
-    if(checkerindex + 4 < 12) {
+    if(checkerindex + 4 <= 12) {
         zones.push(checkerindex+4);
     }
     return zones;
