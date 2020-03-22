@@ -171,24 +171,40 @@ div.mi-card-06 {
     border: 1px solid #66CCCC;
     margin-left: 10px;
     margin-top: 10px;
+    transform-style: preserve-3d;
+    position: relative;
 }
+.box > div > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 /* 区域闪动提醒 */
 .zone-animation1 {
-    background-color: #aaaaaa;
-    animation: zone-frame1 3s;
-    -webkit-animation: zone-frame1 3s;
+    -webkit-animation: zone-frame 2s;
+    animation: zone-frame 2s;
+}
+.box > div > div.zone-animation2 {
+    -webkit-animation: zone-toggle 500ms;
+    animation: zone-toggle 500ms;
 }
 
-
-@keyframes zone-frame1 {
-    25% { background-color: #999999; }
-    50% { background-color: #aaaaaa; }
-    75% { background-color: #999999; }
+@-webkit-keyframes zone-frame {
+    from {background-color: #cc0033;}
+    to {background-color: #222BA4;}
 }
-@-webkit-keyframes zone-frame1 {
-    25% { background-color: #999999; }
-    50% { background-color: #aaaaaa; }
-    75% { background-color: #999999; }
+@keyframes zone-frame {
+    from {background-color: #cc0033;}
+    to {background-color: #222BA4;}
+}
+@-webkit-keyframes zone-toggle {
+    from {-webkit-transform: perspective(800px) rotateY(0deg);}
+    to {-webkit-transform: perspective(800px) rotateY(360deg);}
+}
+@keyframes zone-toggle {
+    from {transform: perspective(800px) rotateY(0deg);}
+    to {transform: perspective(800px) rotateY(360deg);}
 }
 #modal {
     position: absolute;

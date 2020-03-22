@@ -9,6 +9,7 @@ var times = 0;
 var roleLabel = '';
 var pre_klass = 'zone-animation';
 var CURR_CARD = null;
+var max_card = 0;
 
 window.onload = function() {
     this.resetCards();
@@ -47,11 +48,11 @@ function cardEventInit() {
 // 卡牌拖动开始
 function drag_start(e) {
     var data = this.getAttribute('data-cv') + ' ' + this.getAttribute('data-role');
-    console.log('color and role: ', data);
     CURR_CARD = this;
     e.dataTransfer.setData('text', data);
     var zones = getNullZones();
     zoneBlink(zones, 1);
+    removeChildrenClass(CHECKERS, pre_klass + '2');
 }
 
 // 卡牌拖动过程
@@ -71,6 +72,7 @@ function drop_it(e) {
     var currChecker = e.target;
     // 将闪动区域的动画效果去除
     removeClass(CHECKERS, pre_klass + '1');
+    
     if(currChecker.getAttribute('data-stat') == 0) {
         // 获取当前被拖动的卡牌数据
         var cardval = e.dataTransfer.getData('text');
@@ -78,6 +80,7 @@ function drop_it(e) {
             cv: cardval.split(' ')[0],
             role: cardval.split(' ')[1]
         };
+        
         currChecker.innerHTML = CURR_CARD.innerHTML;
         
         currChecker.style.backgroundColor = COLOR[cardObj.role];
@@ -103,12 +106,27 @@ function drop_it(e) {
         var _here = CHECKERS[zones[j]-1];
         if(_here.getAttribute('data-camp') && _here.getAttribute('data-camp') != cardObj.role) {
             var _val_here = _here.getAttribute('data-cv');
-            if(_val_here < cardObj.cv) {
+            console.log(_here.children);
+            // if current card is joke, this card could just attack the max card of all the fighting area.
+            // or if the current card is the 1 card, it just could attack the joke card
+            if((cardObj.cv == 6 && _val_here == max_card) || (cardObj.cv == 1 && _val_here == 6)) {
                 _here.style.backgroundColor = COLOR[cardObj.role];
                 _here.setAttribute('data-camp', cardObj.role);
+                // _here.children[0].className += ' toggle';
+                
+                addClass(_here.children[0], 'zone-animation2');
+            } else if(_val_here < cardObj.cv) {
+                _here.style.backgroundColor = COLOR[cardObj.role];
+                _here.setAttribute('data-camp', cardObj.role);
+                // _here.children[0].className += ' toggle';
+                addClass(_here.children[0], 'zone-animation2');
             }
-            // 
         }
+    }
+
+    // save the max value of all card
+    if(cardObj.cv > max_card) {
+        max_card = cardObj.cv;
     }
 
     // 判断游戏是否结束，如果结束给出对战结果
@@ -155,7 +173,6 @@ function nullCard(card) {
 
 // 计算卡牌攻击范围
 function getAttackZones(_checkerindex) {
-    console.log(_checkerindex);
     var checkerindex = parseInt(_checkerindex);
     if(!isInt(checkerindex)) {
         console.error(101, 'Get the wrong checker index, it should be one number');
@@ -234,6 +251,15 @@ function removeClass(els, klassname) {
         for(var i=0; i<els.length; i++) {
             if(els[i].classList) {
                 els[i].classList.remove(klassname);
+            }
+        }
+    }
+}
+function removeChildrenClass(els, klassname) {
+    if(!els.classList && els.length > 0) {
+        for(var i=0; i<els.length; i++) {
+            if(els[i].children[0] && els[i].children[0].classList) {
+                els[i].children[0].classList.remove(klassname);
             }
         }
     }
