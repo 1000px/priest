@@ -241,6 +241,8 @@ div.mi-card-06 {
     font-size: large;
     font-weight: bold;
     text-align: center;
+    height: 48px;
+    line-height: 48px;
 }
 .info .result button {
     width: 60%;

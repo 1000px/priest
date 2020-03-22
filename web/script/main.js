@@ -149,11 +149,11 @@ function drop_it(e) {
     if(times == 12) {
         var endStr = '';
         if(mineCount > 6) {
-            endStr += '<h3>You Win!</h3>';
+            endStr += '<h2>You Win!</h2>';
         } else if(mineCount == 6) {
-            endStr += '<h3>Same Score!</h3>';
+            endStr += '<h2>Same Score!</h2>';
         } else {
-            endStr += '<h3>You Lose...</h3>';
+            endStr += '<h2>You Lose...</h2>';
         }
         endStr += '<button onclick="resetGame()">重新开始？</button>'
         var result = document.getElementById('result');
